@@ -35,31 +35,51 @@ class View {
             let cardNumber = i
             drawNumberbyCard(cardNumber)
             drawbingoPatternbyCard(cardNumber)
+            drawwinChestsbyCard(cardNumber)
+            drawwinCoinsbyCard(cardNumber)
         }
-        function drawwinChestsbyCard(){
+        function drawwinChestsbyCard(CardIndex) {
             var template = `<table id="config1_table_chests">Chests:<tr><td>
                             <input class="cellLOng" type="text"></td></tr></table>`
-            
+            var $template = $(template);
+            $template.find("input").each((i, e) => {
+                $(e).val(MODEL.data.cards[CardIndex].chests).data({ "CardIndex": CardIndex, "name": "chests", "count": i }).change(function () {
+                    var $this = $(this)
+                    var target = $this.data()
+                    MODEL.data.cards[target.CardIndex].chests = $this.val().split(",").map(Number)
+                    MODEL.updateFromEditorModel()
+                })
+            })
+            $(MODEL.viewPort).append($template)
+        }
+        function drawwinCoinsbyCard(CardIndex) {
+            var template = `<table id="config1_table_coins">Coins:<tr><td>
+                            <input class="cellLOng" type="text"></td></tr></table>`
+            var $template = $(template);
+            $template.find("input").each((i, e) => {
+                $(e).val(MODEL.data.cards[CardIndex].coins).data({ "CardIndex": CardIndex, "name": "coins", "count": i }).change(function () {
+                    var $this = $(this)
+                    var target = $this.data()
+                    MODEL.data.cards[target.CardIndex].coins = $this.val().split(",").map(Number)
+                    MODEL.updateFromEditorModel()
+                })
+            })
+            $(MODEL.viewPort).append($template)
         }
         function drawbingoPatternbyCard(CardIndex) {
             var template = `<table id="config1_table_win_patterns">Win pattern:
-            <tr>
-                <td><input class="cell" type="text"></td><td><input class="cell" type="text"></td>
-                <td><input class="cell" type="text" style="background: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot;><text x=&quot;25%&quot; y=&quot;75%&quot; font-size=&quot;20&quot; fill=&quot;rgba(255, 0, 0, 0.137)&quot;>✪</text></svg>');
-                "></td><td><input class="cell" type="text"></td><td><input class="cell" type="text"></td>
-            </tr>
-        </table>`
+                <tr><td><input class="cell" type="text"></td><td><input class="cell" type="text"></td>
+                <td><input class="cell" type="text" style="background: url('data:image/svg+xml;utf8,
+                <svg xmlns=&quot;http://www.w3.org/2000/svg&quot;><text x=&quot;25%&quot; y=&quot;75%&quot; font-size=&quot;20&quot; fill=&quot;rgba(255, 0, 0, 0.137)&quot;>✪</text></svg>');
+                "></td><td><input class="cell" type="text"></td><td><input class="cell" type="text"></td></tr></table>`
             var $template = $(template);
             $template.find("input").each((i, e) => {
                 $(e).val(MODEL.data.cards[CardIndex].bingoPattern[i]).data({ "CardIndex": CardIndex, "name": "bingoPattern", "count": i }).change(function () {
                     var $this = $(this)
                     var target = $this.data()
-                    var value = +$this.val() || false;
-                    //MODEL.data.cards[target.CardIndex].bingoPattern.splice(target.count,target.count)//херня какаято
-                    //if (value != 0) { MODEL.data.cards[target.CardIndex].bingoPattern.push(+value) }
                     MODEL.data.cards[target.CardIndex].bingoPattern[target.count] = +$this.val()
                     MODEL.updateFromEditorModel()
-                });;
+                });
             });
             $(MODEL.viewPort).append($template)
         }
