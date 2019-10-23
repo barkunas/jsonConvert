@@ -11,15 +11,34 @@ class View {
         $(MODEL.jsonFiled).change((e) => {
             MODEL.updateFromTextModel()
             this.clearView()
-            this.drawBalls(MODEL)
-            this.drawCards(MODEL)
-            console.log()
+            console.log(MODEL.data)
+            for (let configElement in MODEL.data) {
+                switch (configElement) {
+                    case "balls": this.drawBalls(MODEL);
+                        break;
+                    case "cards": this.drawCards(MODEL);
+                        break;
+                    case "cellCoinsPrize": this.drawwinCellCoinsPrize(MODEL);
+                        break;
+                    default: this.drawwinOutofScope(MODEL, configElement);
+                        break;
+                }
+            }
+            // this.clearView()
+            // this.drawBalls(MODEL)
+            // this.drawCards(MODEL)
+            // this.drawwinCellCoinsPrize(MODEL)
+            // this.drawwinOutofScope(MODEL)
         })
         for (let configElement in MODEL.data) {
             switch (configElement) {
                 case "balls": this.drawBalls(MODEL);
                     break;
                 case "cards": this.drawCards(MODEL);
+                    break;
+                case "cellCoinsPrize": this.drawwinCellCoinsPrize(MODEL);
+                    break;
+                default: this.drawwinOutofScope(MODEL, configElement);
                     break;
             }
         }
@@ -137,6 +156,19 @@ class View {
 
         }
     }
+    drawwinCellCoinsPrize(MODEL) {
+        var template = `<table id="config1_table_CellCoinsPrize">CellCoinsPrize:<tr><td>
+                        <input class="cell" type="text"></td></tr></table>`
+        var $template = $(template);
+        $template.find("input").each((i, e) => {
+            $(e).val(MODEL.data.cellCoinsPrize).change(function () {
+                var $this = $(this)
+                MODEL.data.cellCoinsPrize = +$this.val()
+                MODEL.updateFromEditorModel()
+            })
+        })
+        $(MODEL.viewPort).append($template)
+    }
     drawBalls(MODEL) {
         var balls = this.model.data["balls"]
         var model = this.model.jsonFiled
@@ -163,6 +195,21 @@ class View {
         }
         $config1_table_balls.prepend('<p>Balls</p>')
         $(this.model.viewPort).append($config1_table_balls)
+    }
+    drawwinOutofScope(MODEL, elemName) {
+        var template = `<table id="config1_table_${elemName}">${elemName}:<tr><td>
+                        <textarea></textarea></td></tr></table>`
+        var $template = $(template);
+        $template.find("textarea").each((i, e) => {
+            var text = JSON.stringify(MODEL.data[elemName], null, "\t")
+            $(e).val(text).change(function () {
+                var $this = $(this)
+                MODEL.data[elemName] = JSON.parse($this.val())
+                MODEL.updateFromEditorModel()
+            })
+        })
+
+        $(MODEL.viewPort).append($template)
     }
 }
 
