@@ -20,15 +20,19 @@ class View {
                         break;
                     case "cellCoinsPrize": this.drawwinCellCoinsPrize(MODEL);
                         break;
+                    case "isLastRound": this.drawCheckBox(MODEL, configElement);
+                        break;
+                    case "statsEnabled": this.drawCheckBox(MODEL, configElement);
+                        break;
+                    case "ranksEnabled": this.drawCheckBox(MODEL, configElement);
+                        break;
                     default: this.drawwinOutofScope(MODEL, configElement);
                         break;
                 }
             }
-            // this.clearView()
-            // this.drawBalls(MODEL)
-            // this.drawCards(MODEL)
-            // this.drawwinCellCoinsPrize(MODEL)
-            // this.drawwinOutofScope(MODEL)
+            $(function () {
+                $("[type = checkbox]").checkboxradio();
+            });
         })
         for (let configElement in MODEL.data) {
             switch (configElement) {
@@ -37,6 +41,12 @@ class View {
                 case "cards": this.drawCards(MODEL);
                     break;
                 case "cellCoinsPrize": this.drawwinCellCoinsPrize(MODEL);
+                    break;
+                case "isLastRound": this.drawCheckBox(MODEL, configElement);
+                    break;
+                case "statsEnabled": this.drawCheckBox(MODEL, configElement);
+                    break;
+                case "ranksEnabled": this.drawCheckBox(MODEL, configElement);
                     break;
                 default: this.drawwinOutofScope(MODEL, configElement);
                     break;
@@ -196,9 +206,28 @@ class View {
         $config1_table_balls.prepend('<p>Balls</p>')
         $(this.model.viewPort).append($config1_table_balls)
     }
+    drawCheckBox(MODEL, elemName) {
+        var id = elemName + "_" + MODEL.jsonFiled.id
+        var template1 = `<label for="${id}">${elemName}</label>`
+        var template2 = `<input type="checkbox" name="${id}" id="${id}">`
+        var $template1 = $(template1);
+        var $template2 = $(template2);
+
+        var value = MODEL.data[elemName]
+        $template2.prop('checked', value).click(function () {
+            var $this = $(this)
+            MODEL.data[elemName] = $this.prop('checked')
+            MODEL.updateFromEditorModel()
+        })
+        var $table = $(`<table id="config1_table_${elemName}">${elemName}:<tr><td><div style="margin: 10px"></div></td></tr></table>`)
+        var $div = $table.find('div')
+        $div.append($template1)
+        $div.append($template2)
+        $(MODEL.viewPort).append($div)
+    }
     drawwinOutofScope(MODEL, elemName) {
         var template = `<table id="config1_table_${elemName}">${elemName}:<tr><td>
-                        <textarea></textarea></td></tr></table>`
+                        <textarea style="margin: 0px; height: 207px; width: 448px;"></textarea></td></tr></table>`
         var $template = $(template);
         $template.find("textarea").each((i, e) => {
             var text = JSON.stringify(MODEL.data[elemName], null, "\t")

@@ -13,5 +13,13 @@ for(i=0;i<configCount;i++){
    $("#tabs").tabs();
  });
 
+ $(window).ready(()=>{
+  $(function () {
+    $( "[type = checkbox]" ).checkboxradio();
+   });
+})
+
+
+
 console.log("загрузил")
 $(loader).hide()
