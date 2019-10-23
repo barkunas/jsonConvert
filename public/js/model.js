@@ -30,12 +30,12 @@ class Model {
         }
         function checkEdgeCases(data) {
 
-            edgeCaseWinPattern(data)
-            function edgeCaseWinPattern(modelData) {
+            edgeCasebingoPattern(data)
+            function edgeCasebingoPattern(modelData) {
                 var cards = modelData.cards
                 for (i = 0; i < cards.length; i++) {
-                    var winPattern = cards[i].winPattern
-                    modelData.cards[i].winPattern = winPattern.filter(function (e) {
+                    var bingoPattern = cards[i].bingoPattern
+                    modelData.cards[i].bingoPattern = bingoPattern.filter(function (e) {
                         var check = e > 0
                         console.log(check)
                         return check 

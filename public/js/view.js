@@ -34,14 +34,14 @@ class View {
         for (i = 0; i < countCards; i++) {
             let cardNumber = i
             drawNumberbyCard(cardNumber)
-            drawwinPatternbyCard(cardNumber)
+            drawbingoPatternbyCard(cardNumber)
         }
         function drawwinChestsbyCard(){
             var template = `<table id="config1_table_chests">Chests:<tr><td>
                             <input class="cellLOng" type="text"></td></tr></table>`
             
         }
-        function drawwinPatternbyCard(CardIndex) {
+        function drawbingoPatternbyCard(CardIndex) {
             var template = `<table id="config1_table_win_patterns">Win pattern:
             <tr>
                 <td><input class="cell" type="text"></td><td><input class="cell" type="text"></td>
@@ -51,13 +51,13 @@ class View {
         </table>`
             var $template = $(template);
             $template.find("input").each((i, e) => {
-                $(e).val(MODEL.data.cards[CardIndex].winPattern[i]).data({ "CardIndex": CardIndex, "name": "winPattern", "count": i }).change(function () {
+                $(e).val(MODEL.data.cards[CardIndex].bingoPattern[i]).data({ "CardIndex": CardIndex, "name": "bingoPattern", "count": i }).change(function () {
                     var $this = $(this)
                     var target = $this.data()
                     var value = +$this.val() || false;
-                    //MODEL.data.cards[target.CardIndex].winPattern.splice(target.count,target.count)//херня какаято
-                    //if (value != 0) { MODEL.data.cards[target.CardIndex].winPattern.push(+value) }
-                    MODEL.data.cards[target.CardIndex].winPattern[target.count] = +$this.val()
+                    //MODEL.data.cards[target.CardIndex].bingoPattern.splice(target.count,target.count)//херня какаято
+                    //if (value != 0) { MODEL.data.cards[target.CardIndex].bingoPattern.push(+value) }
+                    MODEL.data.cards[target.CardIndex].bingoPattern[target.count] = +$this.val()
                     MODEL.updateFromEditorModel()
                 });;
             });

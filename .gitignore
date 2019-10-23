@@ -2,3 +2,5 @@ node_modules
 fla
 toolset-master@5e1a78d4eaa
 buildBip.py
+public/results
+temp
