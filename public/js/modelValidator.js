@@ -1,5 +1,5 @@
 class ModelValidator {
     constructor(){
-        $.notify("Warning: nothink", "warn");
+        $.notify("Warning: nothing", "warn");
     }
 }

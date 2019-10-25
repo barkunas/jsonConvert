@@ -15,7 +15,7 @@ class Model {
     }
     updateFromEditorModel() {
         var thisModel = this
-        console.log("tututu")
+        new ModelValidator()
         try {
             checkEdgeCases(this.data)
             var jsonFromTextField = JSON.parse($(this.jsonFiled).val())
