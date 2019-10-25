@@ -7,6 +7,7 @@ class Model {
     updateFromTextModel() {
         try {
             this.data = JSON.parse($(this.jsonFiled).val())
+            new ModelValidator()
             return true
         } catch (e) {
             console.log(e)
@@ -15,7 +16,7 @@ class Model {
     }
     updateFromEditorModel() {
         var thisModel = this
-        new ModelValidator()
+        
         try {
             checkEdgeCases(this.data)
             var jsonFromTextField = JSON.parse($(this.jsonFiled).val())
@@ -23,6 +24,7 @@ class Model {
                 jsonFromTextField[configElem] = this.data[configElem]
             }
             $(this.jsonFiled).val(JSON.stringify(jsonFromTextField, null, "\t"))
+            new ModelValidator()
             return true
         } catch (e) {
             console.log(e)
